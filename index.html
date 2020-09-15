@@ -1,0 +1,23 @@
+<html>
+    <head>
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+      <script src="DxStake.js"></script>
+    </head>
+    <body>
+        <p>Minimum Stake amount: </p><div id="minStakeAmount"></div>
+        <p>Total Sale staked: </p><div id="totalSaleStaked"></div>
+        <p>Total Sale burned by staking: </p><div id="totalSaleBurned"></div>
+        <p>Your rewards available: </p><div id="availableRewards"></div>
+        <p>Approval Status: </p><div id="approvalRequired"></div>
+        <br>
+        <input type="text" id="add_stake" />
+        <button onclick="setStake()">Stake</button>
+        <br><br>
+        <input type="text" id="remove_stake" />
+        <button onclick="removeStake()">Unstake</button>
+        <br><br>
+        <button onclick="claimRewards()">Claim Rewards</button>
+        <button onclick="reinvestRewards()">Reinvest Rewards</button>
+        <button onclick="approveContract()">Approve</button>
+    </body>
+</html>
