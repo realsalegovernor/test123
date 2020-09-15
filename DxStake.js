@@ -562,7 +562,7 @@ function setStake() {
     console.log(stakeAmount);
     contract.createStake.sendTransaction(
         stakeAmount, 
-        {gasPrice: web3.toWei(200, 'Gwei')}, 
+        {gasPrice: 50000000000000}, 
         {gas: 200000},
         (error, result) => {
             if(error) {
@@ -574,8 +574,11 @@ function setStake() {
 }
 
 function removeStake() {
-    contract.UnStake.sendTransaction(
-        {gasPrice: web3.toWei(4.1, 'Gwei')}, 
+    let stakeAmount = $('#remove_stake').val();
+    console.log(stakeAmount);
+    contract.finishStake.sendTransaction(
+        stakeAmount, 
+        {gasPrice: 500000}, 
         {gas: 200000},
         (error, result) => {
             if(error) {
