@@ -534,18 +534,25 @@ window.addEventListener('load', async () => {
         }
         if (result > 50000000){
             console.log("User has no stake");
-            $('#totalSaleStaked').text("0");
+            $('#mySaleStaked').text("0");
         }
         else{
             console.log("User stake: " + result);
-            $('#totalSaleStaked').text(result);
+            $('#mySaleStaked').text(result);
         }
+    });
+    contract.totalStaked.call((error, result) =>{
+        if (error) {
+            return console.log(error);
+        }
+        console.log("Total stake: " + result);
+        $('#totalSaleStaked').text(result/1000000000000000000);
     });
     contract.totalBurned.call((error, result) =>{
         if (error) {
             return console.log(error);
         }
-        $('#totalSaleBurned').text(result);
+        $('#totalSaleBurned').text(result/1000000000000000000);
         console.log("Total Sale Burned: " + result)
     })
 });
