@@ -459,7 +459,7 @@ tokenAbi =
 let contract;
 let tokenContract;
 
-window.addEventListener('load', async () => {
+async function connectWallet() { 
     // Modern dapp browsers...
     if (window.ethereum) {
         window.web3 = new Web3(ethereum);
@@ -485,6 +485,16 @@ window.addEventListener('load', async () => {
     contract = web3.eth.contract(abi).at(contract_address);
     tokenContract = web3.eth.contract(tokenAbi).at(token_contract_address);
 
+    // Get user token balance
+    tokenContract.balanceOf.call(web3.eth.defaultAccount, (error, result) => {
+        if (error) {
+            return console.log(error);
+        }
+        $('#walletBalance').text(Math.floor((result/1000000000000000000)*100)/100);
+        console.log("Wallet balance is: " + result/1000000000000000000);
+    });
+
+    // Get token symbol
     tokenContract.symbol.call((error, result) => {
         if (error) {
             return console.log(error);
@@ -492,6 +502,7 @@ window.addEventListener('load', async () => {
         console.log("Connected token symbol is: " + result);
     });
 
+    // Get contract allowance
     tokenContract.allowance.call(web3.eth.defaultAccount, contract_address, (error,result) => {
         if (error) {
             return console.log(error);
@@ -506,6 +517,7 @@ window.addEventListener('load', async () => {
 
     });
 
+    // Get minimum stake amount
     contract.getMinimumStakeAmount.call((error, result) => {
         if(error) {
             return console.log(error);
@@ -514,6 +526,7 @@ window.addEventListener('load', async () => {
         console.log("Minimum stake amount: " + result)
     });
 
+    // Get your earned rewards
     contract.CHECKREWARD.call((error, result) => {
         if (error) {
             return console.log(error);
@@ -524,10 +537,11 @@ window.addEventListener('load', async () => {
         }
         else{
             $('#availableRewards').text(result);
-            console.log("User rewards: " + result)
+            console.log("User rewards: " + Math.floor((result*100)/100));
         }
     });
 
+    // Get your staked tokens
     contract.CHECKSTAKE.call((error, result) =>{
         if (error) {
             return console.log(error);
@@ -538,32 +552,35 @@ window.addEventListener('load', async () => {
         }
         else{
             console.log("User stake: " + result);
-            $('#mySaleStaked').text(result);
+            $('#mySaleStaked').text(Math.floor((result*100)/100));
         }
     });
+
+    // Get total tokens staked in contract
     contract.totalStaked.call((error, result) =>{
         if (error) {
             return console.log(error);
         }
         console.log("Total stake: " + result);
-        $('#totalSaleStaked').text(result/1000000000000000000);
+        $('#totalSaleStaked').text(Math.floor((result/1000000000000000000)*100)/100);
     });
+
+    // Get total burned by contract
     contract.totalBurned.call((error, result) =>{
         if (error) {
             return console.log(error);
         }
-        $('#totalSaleBurned').text(result/1000000000000000000);
+        $('#totalSaleBurned').text(Math.floor((result/1000000000000000000)*100)/100);
         console.log("Total Sale Burned: " + result)
     })
-});
+};
 
 function setStake() {
-    let stakeAmount = $('#add_stake').val();
+    let stakeAmount = Math.floor($('#add_stake').val());
     console.log(stakeAmount);
     contract.createStake.sendTransaction(
         stakeAmount, 
-        {gasPrice: 50000000000000}, 
-        {gas: 200000},
+        {gasPrice: web3.toWei(100.1, 'Gwei')}, 
         (error, result) => {
             if(error) {
                 return console.log(error);
@@ -571,15 +588,14 @@ function setStake() {
             console.log("txhash: " + result); 
         }
     );
-}
+};
 
 function removeStake() {
-    let stakeAmount = $('#remove_stake').val();
+    let stakeAmount = Math.floor($('#remove_stake').val());
     console.log(stakeAmount);
     contract.finishStake.sendTransaction(
         stakeAmount, 
-        {gasPrice: 500000}, 
-        {gas: 200000},
+        {gasPrice: web3.toWei(100.1, 'Gwei')}, 
         (error, result) => {
             if(error) {
                 return console.log(error);
@@ -587,22 +603,51 @@ function removeStake() {
             console.log("txhash: " + result); 
         }
     );
-}
+};
 
 function claimRewards() {
-
-}
+    contract.CLAIMREWARD.sendTransaction(
+        {gasPrice: web3.toWei(100.1, 'Gwei')}, 
+        (error, result) => {
+            if(error) {
+                return console.log(error);
+            }
+            console.log("txhash: " + result); 
+        }
+    );
+};
 
 function reinvestRewards(){
+    contract.REINVESTREWARD.sendTransaction(
+        {gasPrice: web3.toWei(100.1, 'Gwei')}, 
+        (error, result) => {
+            if(error) {
+                return console.log(error);
+            }
+            console.log("txhash: " + result); 
+        }
+    );
+};
 
-}
+function unstakeAll(){
+    contract.UnStake.sendTransaction(
+        {gasPrice: web3.toWei(100.1, 'Gwei')}, 
+        (error, result) => {
+            if(error) {
+                return console.log(error);
+            }
+            console.log("txhash: " + result); 
+        }
+    );
+};
 
 function approveContract(){
     let spenderContract = contract_address;
-    let amount = 500000000000000000000000000
+    let amount = 50000000 * 1000000000000000000;
     tokenContract.approve.sendTransaction(
         spenderContract,
         amount,
+        {gasPrice: web3.toWei(100.1, 'Gwei')},
         (error, result) => {
             if(error) {
                 return console.log(error);
@@ -610,4 +655,4 @@ function approveContract(){
             console.log("txhash: " + result); 
         }
     );
-}
+};

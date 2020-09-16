@@ -4,6 +4,10 @@
       <script src="DxStake.js"></script>
     </head>
     <body>
+
+        <button onclick="connectWallet()">Connect web3 Wallet</button>
+
+        <p>Your SALE Balance: </p><div id="walletBalance"></div>
         <p>Minimum Stake amount: </p><div id="minStakeAmount"></div>
         <p>Total Sale staked: </p><div id="totalSaleStaked"></div>
         <p>Your Sale staked: </p><div id="mySaleStaked"></div>
@@ -19,6 +23,8 @@
         <br><br>
         <button onclick="claimRewards()">Claim Rewards</button>
         <button onclick="reinvestRewards()">Reinvest Rewards</button>
+        <br><br>
         <button onclick="approveContract()">Approve</button>
+        <button onclick="unstakeAll()">Unstake all and claim</button>
     </body>
 </html>
