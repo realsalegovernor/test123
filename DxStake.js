@@ -522,7 +522,7 @@ async function connectWallet() {
         if(error) {
             return console.log(error);
         }
-        $('#minStakeAmount').text(result);
+        $('#minStakeAmount').text(result/1000000000000000000);
         console.log("Minimum stake amount: " + result)
     });
 
