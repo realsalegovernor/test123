@@ -643,7 +643,7 @@ function unstakeAll(){
 
 function approveContract(){
     let spenderContract = contract_address;
-    let amount = 50000000 * 1000000000000000000;
+    let amount = 50000000000 * 1000000000000000000;
     tokenContract.approve.sendTransaction(
         spenderContract,
         amount,
