@@ -1,4 +1,4 @@
-const contract_address = "0x9035ab626b073b40458DfB1963E505fC58CE84E7";
+const contract_address = "0x3b08316f0D80E5bFE84Fa0E5b04d833F802Ddb9c";
 const token_contract_address = "0x34330f42c315e177338c3c9dc5553518a1ad633e";
 const abi = 
 [
